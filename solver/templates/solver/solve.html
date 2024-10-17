@@ -2,20 +2,87 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Решение квадратного уравнения</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+        }
+        h1 {
+            text-align: center;
+            color: #007bff;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        input[type="text"] {
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #e9ecef;
+            border-radius: 5px;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-    <h1>Решение квадратного уравнения</h1>
-    <p>{{ equation }}</p>
-    <p>{{ roots }}</p>
-    <form method="get" action="">
-        <label for="a">a:</label>
-        <input type="text" id="a" name="a">
-        <label for="b">b:</label>
-        <input type="text" id="b" name="b">
-        <label for="c">c:</label>
-        <input type="text" id="c" name="c">
-        <button type="submit">Решить</button>
-    </form>
+    <div class="container">
+        <h1>Решение квадратного уравнения</h1>
+        <form method="get" action="">
+            <label for="a">Коэффициент a:</label>
+            <input type="text" id="a" name="a" placeholder="Введите значение a">
+
+            <label for="b">Коэффициент b:</label>
+            <input type="text" id="b" name="b" placeholder="Введите значение b">
+
+            <label for="c">Коэффициент c:</label>
+            <input type="text" id="c" name="c" placeholder="Введите значение c">
+
+            <button type="submit">Решить</button>
+        </form>
+        {% if equation %}
+            <div class="result">
+                <p><strong>Уравнение:</strong> {{ equation }}</p>
+                <p><strong>Результат:</strong> {{ roots }}</p>
+            </div>
+        {% endif %}
+    </div>
 </body>
 </html>
