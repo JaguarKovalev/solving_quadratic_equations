@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "solving-quadratic-eqs"
+version = "0.1.0"
+description = "Проект представляет собой веб-приложение для решения квадратных уравнений, где пользователь вводит коэффициенты через GET-запросы. Приложение обрабатывает запросы, вычисляет корни уравнения и отображает результат на веб-странице через HTML-шаблон. В случае некорректного ввода приложение выводит сообщение об ошибке. Проект создан на Django 5 с использованием Poetry для управления зависимостями."
+authors = ["JaguarKovalev <jaguarkovalev@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+django = "^5.1.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
