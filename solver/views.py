@@ -11,11 +11,12 @@ def solve(request):
     try:
         a, b, c = float(a), float(b), float(c)
 
-        if a == 0:
+        if a == 0 and b == 0 and c == 0:
+            roots = "Ошибка: уравнение не определено (все коэффициенты равны нулю)."
+        elif a == 0:
             if b == 0:
                 roots = "Ошибка: коэффициенты 'a' и 'b' не могут быть равны нулю одновременно."
             else:
-                # Решение линейного уравнения bx + c = 0
                 root = -c / b
                 roots = f"Корень линейного уравнения: x = {root}"
         else:
@@ -38,3 +39,4 @@ def solve(request):
         "solver/solve.html",
         {"equation": f"{a}x² + {b}x + {c} = 0", "roots": roots},
     )
+
