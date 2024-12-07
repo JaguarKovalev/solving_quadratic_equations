@@ -1,7 +1,9 @@
 import math
-
+import random
 from django.shortcuts import render
-
+from django.shortcuts import render, redirect
+from django.utils.crypto import get_random_string
+from .models import QuadraticSolution
 
 def solve(request):
     a = request.GET.get("a", "0")
@@ -40,3 +42,36 @@ def solve(request):
         {"equation": f"{a}x² + {b}x + {c} = 0", "roots": roots},
     )
 
+def trainer(request):
+    if request.method == 'POST':
+        a = float(request.POST['a'])
+        b = float(request.POST['b'])
+        c = float(request.POST['c'])
+        user_solution = request.POST['solution']
+
+        discriminant = b ** 2 - 4 * a * c
+        if discriminant > 0:
+            root1 = (-b + math.sqrt(discriminant)) / (2 * a)
+            root2 = (-b - math.sqrt(discriminant)) / (2 * a)
+            correct_solution = f"{root1:.2f}, {root2:.2f}"
+        elif discriminant == 0:
+            root = -b / (2 * a)
+            correct_solution = f"{root:.2f}"
+        else:
+            correct_solution = "No real roots"
+
+        is_correct = user_solution.strip() == correct_solution
+        QuadraticSolution.objects.create(
+            a=a, b=b, c=c,
+            user_solution=user_solution,
+            correct_solution=correct_solution,
+            is_correct=is_correct
+        )
+        return redirect('trainer')
+
+    random_a = random.randint(1, 10)
+    random_b = random.randint(-10, 10)
+    random_c = random.randint(-10, 10)
+    return render(request, 'solver/trainer.html', {
+        'a': random_a, 'b': random_b, 'c': random_c
+    })
