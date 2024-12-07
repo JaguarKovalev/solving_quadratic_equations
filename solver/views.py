@@ -6,6 +6,9 @@ from django.utils.crypto import get_random_string
 from .models import QuadraticSolution
 from django.urls import reverse
 
+def menu(request):
+    return render(request, 'solver/menu.html')
+
 def solve(request):
     a = request.GET.get("a", "0")
     b = request.GET.get("b", "0")
