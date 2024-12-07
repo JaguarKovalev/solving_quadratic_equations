@@ -24,7 +24,7 @@ SECRET_KEY = "django-insecure-r9s$4rcfj*yjz6uy#dzx_@pntw)+hvm=u^c@q(3@o^j*72@+j9
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["0.0.0.0", "127.0.0.1", "web", "192.168.50.236", "cloud.jkproduction.pro", "109.173.104.21"]
+ALLOWED_HOSTS = ["0.0.0.0", "127.0.0.1", "web", "192.168.50.236", "school.jkproduction.pro", "109.173.104.21"]
 
 # Application definition
 
@@ -124,3 +124,11 @@ CACHES = {
         "LOCATION": "redis://redis:6379/1",  # Используем имя сервиса из docker-compose
     }
 }
+
+CSRF_TRUSTED_ORIGINS = [
+    "http://127.0.0.1",
+    "http://localhost",
+    "http://web",
+    "https://school.jkproduction.pro",
+    "http://109.173.104.21",
+]
