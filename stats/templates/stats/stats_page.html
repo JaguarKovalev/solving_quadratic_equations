@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+
+{% block title %}Статистика{% endblock %}
+
+{% block content %}
+<h1>Статистика</h1>
+<ul>
+    <li>Количество опубликованных постов: {{ published_posts_count }}</li>
+    <li>Самый длинный пост: {{ longest_post.title|default:"Нет данных" }}</li>
+    <li>Количество постов за последние 7 дней: {{ recent_posts_count }}</li>
+    <li>Количество постов с длинными заголовками: {{ posts_with_long_titles }}</li>
+    <li>Количество правильных решений уравнений: {{ correct_solutions_count }}</li>
+    <li>Самое частое значение коэффициента a: {{ most_common_a.a|default:"Нет данных" }}</li>
+    <li>Решения, сделанные за последние 7 дней: {{ recent_solutions }}</li>
+    <li>Количество уникальных уравнений: {{ unique_equations_count }}</li>
+    <li>Процент правильных решений: {{ accuracy|floatformat:2 }}%</li>
+</ul>
+{% endblock %}

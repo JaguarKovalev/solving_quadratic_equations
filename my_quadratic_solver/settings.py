@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "solver.apps.SolverConfig",
     "news.apps.NewsConfig",
+    "stats.apps.StatsConfig",
 ]
 
 MIDDLEWARE = [
