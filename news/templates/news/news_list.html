@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+
+{% block title %}Новости{% endblock %}
+
+{% block content %}
+<h1>Новости</h1>
+<div class="news-list">
+    {% for news in page_obj %}
+        <div class="news-item">
+            <h2>{{ news.title }}</h2>
+            <img src="{{ news.image.url }}" alt="{{ news.title }}" style="max-width: 100%;">
+            <p>{{ news.short_content }}</p>
+        </div>
+    {% endfor %}
+</div>
+<div class="pagination">
+    {% if page_obj.has_previous %}
+        <a href="?page=1">&laquo; Первая</a>
+        <a href="?page={{ page_obj.previous_page_number }}">Предыдущая</a>
+    {% endif %}
+    <span>Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}</span>
+    {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">Следующая</a>
+        <a href="?page={{ page_obj.paginator.num_pages }}">Последняя &raquo;</a>
+    {% endif %}
+</div>
+{% endblock %}
