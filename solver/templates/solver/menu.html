@@ -1,5 +1,8 @@
-{% comment %} Two buttons on all page {% endcomment %}
+{% extends "layout.html" %}
+{% block title %}Меню{% endblock %}
+{% block content %}
 <div class="menu">
     <a href="{% url 'solve' %}">Решатель уравнений</a>
     <a href="{% url 'trainer' %}">Тренажер</a>
 </div>
+{% endblock %}
