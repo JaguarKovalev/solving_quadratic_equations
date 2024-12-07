@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Мини-тренажёр</title>
+</head>
+<body>
+    <h1>Решите квадратное уравнение</h1>
+    <p>Уравнение: {{ a }}x² + {{ b }}x + {{ c }} = 0</p>
+    <form method="post">
+        {% csrf_token %}
+        <input type="hidden" name="a" value="{{ a }}">
+        <input type="hidden" name="b" value="{{ b }}">
+        <input type="hidden" name="c" value="{{ c }}">
+        <label for="solution">Ваше решение (корни через запятую):</label>
+        <input type="text" id="solution" name="solution" placeholder="Введите корни">
+        <button type="submit">Проверить</button>
+    </form>
+</body>
+</html>
