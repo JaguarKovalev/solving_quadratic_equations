@@ -40,10 +40,14 @@ def solve(request):
     except ValueError:
         roots = "Ошибка: введены некорректные данные"
 
+    context = {
+        "equation": f"{a}x² + {b}x + {c} = 0",
+        "roots": roots
+    }
     return render(
         request,
         "solver/solve.html",
-        {"equation": f"{a}x² + {b}x + {c} = 0", "roots": roots},
+        context,
     )
 
 def trainer(request):

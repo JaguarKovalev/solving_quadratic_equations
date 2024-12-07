@@ -1,9 +1,19 @@
 from django.contrib import admin
-from .models import News
+from .models import News, Category, Tag
+
+@admin.register(Category)
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ('name',)
+    prepopulated_fields = {'slug': ('name',)}
+
+@admin.register(Tag)
+class TagAdmin(admin.ModelAdmin):
+    list_display = ('name',)
+    prepopulated_fields = {'slug': ('name',)}
 
 @admin.register(News)
 class NewsAdmin(admin.ModelAdmin):
-    list_display = ('title', 'short_content', 'created_at')
+    list_display = ('title', 'category', 'created_at')
+    list_filter = ('category', 'tags', 'created_at')
     search_fields = ('title', 'content')
-    list_filter = ('created_at',)
-    ordering = ('-created_at',)
+    filter_horizontal = ('tags',)
