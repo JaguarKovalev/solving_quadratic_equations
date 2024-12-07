@@ -4,6 +4,7 @@ from django.shortcuts import render
 from django.shortcuts import render, redirect
 from django.utils.crypto import get_random_string
 from .models import QuadraticSolution
+from django.urls import reverse
 
 def solve(request):
     a = request.GET.get("a", "0")
@@ -47,31 +48,55 @@ def trainer(request):
         a = float(request.POST['a'])
         b = float(request.POST['b'])
         c = float(request.POST['c'])
-        user_solution = request.POST['solution']
+        user_solution = request.POST.get('solution', '').strip()
 
         discriminant = b ** 2 - 4 * a * c
         if discriminant > 0:
             root1 = (-b + math.sqrt(discriminant)) / (2 * a)
             root2 = (-b - math.sqrt(discriminant)) / (2 * a)
-            correct_solution = f"{root1:.2f}, {root2:.2f}"
+            correct_solution_set = {round(root1, 2), round(root2, 2)}
         elif discriminant == 0:
             root = -b / (2 * a)
-            correct_solution = f"{root:.2f}"
+            correct_solution_set = {round(root, 2)}
         else:
-            correct_solution = "No real roots"
+            correct_solution_set = None
 
-        is_correct = user_solution.strip() == correct_solution
+        if correct_solution_set is None:
+            is_correct = user_solution.lower() == 'нет корней'
+            correct_solution = "Нет корней"
+        else:
+            try:
+                user_solution_set = {round(float(x.strip()), 2) for x in user_solution.split(',')}
+                is_correct = user_solution_set == correct_solution_set
+            except ValueError:
+                is_correct = False
+            correct_solution = ", ".join(map(str, sorted(correct_solution_set)))
+
         QuadraticSolution.objects.create(
             a=a, b=b, c=c,
             user_solution=user_solution,
             correct_solution=correct_solution,
             is_correct=is_correct
         )
-        return redirect('trainer')
+
+        # Перенаправление на страницу с результатом
+        return redirect(f"{reverse('trainer')}?result=1&is_correct={is_correct}&correct_solution={correct_solution}&user_solution={user_solution}")
+
+    if 'result' in request.GET:
+        is_correct = request.GET.get('is_correct') == 'True'
+        correct_solution = request.GET.get('correct_solution', '')
+        user_solution = request.GET.get('user_solution', '')
+    else:
+        is_correct = None
+        correct_solution = None
+        user_solution = None
 
     random_a = random.randint(1, 10)
     random_b = random.randint(-10, 10)
     random_c = random.randint(-10, 10)
     return render(request, 'solver/trainer.html', {
-        'a': random_a, 'b': random_b, 'c': random_c
+        'a': random_a, 'b': random_b, 'c': random_c,
+        'user_solution': user_solution,
+        'correct_solution': correct_solution,
+        'is_correct': is_correct
     })

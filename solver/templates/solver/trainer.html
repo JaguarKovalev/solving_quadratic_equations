@@ -3,18 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <title>Мини-тренажёр</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 400px;
+        }
+        h1 {
+            text-align: center;
+            color: #007bff;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label, p {
+            margin-top: 10px;
+        }
+        input[type="text"] {
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #e9ecef;
+            border-radius: 5px;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-    <h1>Решите квадратное уравнение</h1>
-    <p>Уравнение: {{ a }}x² + {{ b }}x + {{ c }} = 0</p>
-    <form method="post">
-        {% csrf_token %}
-        <input type="hidden" name="a" value="{{ a }}">
-        <input type="hidden" name="b" value="{{ b }}">
-        <input type="hidden" name="c" value="{{ c }}">
-        <label for="solution">Ваше решение (корни через запятую):</label>
-        <input type="text" id="solution" name="solution" placeholder="Введите корни">
-        <button type="submit">Проверить</button>
-    </form>
+    <div class="container">
+        <h1>Мини-тренажёр</h1>
+        <p>Уравнение: {{ a }}x² + {{ b }}x + {{ c }} = 0</p>
+        <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="a" value="{{ a }}">
+            <input type="hidden" name="b" value="{{ b }}">
+            <input type="hidden" name="c" value="{{ c }}">
+            <label for="solution">Ваше решение (корни через запятую):</label>
+            <input type="text" id="solution" name="solution" placeholder="Введите корни">
+            <button type="submit">Проверить</button>
+            <button type="submit" name="solution" value="нет корней" style="background-color: #dc3545; margin-top: 10px;">Нет корней</button>
+        </form>
+        {% if correct_solution %}
+            <div class="result">
+                <p><strong>Ваше решение:</strong> {{ user_solution }}</p>
+                <p><strong>Правильный ответ:</strong> {{ correct_solution }}</p>
+                <p><strong>Результат:</strong> {{ is_correct|yesno:'Верно,Неверно' }}</p>
+            </div>
+        {% endif %}
+    </div>
 </body>
 </html>
