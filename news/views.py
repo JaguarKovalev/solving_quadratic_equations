@@ -2,6 +2,7 @@ from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import News, Category, Tag
 from .forms import NewsForm
+from django.contrib.auth.decorators import login_required
 
 def news_list(request):
     news_items = News.objects.filter(status='published')
@@ -32,15 +33,16 @@ def news_by_tag(request, slug):
 
 
 
+@login_required
 def create_post(request):
     if request.method == 'POST':
         form = NewsForm(request.POST, request.FILES)
         if form.is_valid():
             post = form.save(commit=False)
             post.author = request.user
-            post.status = 'pending'  # Статус "На модерации"
+            post.status = 'pending'
             post.save()
-            form.save_m2m()  # Сохраняем теги
+            form.save_m2m()
             return redirect('news_list')
     else:
         form = NewsForm()

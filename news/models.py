@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.conf import settings
 
 class Category(models.Model):
     name = models.CharField("Название категории", max_length=100)
@@ -41,7 +42,7 @@ class News(models.Model):
     status = models.CharField("Статус", max_length=10, choices=STATUS_CHOICES, default='draft')
     created_at = models.DateTimeField("Дата публикации", auto_now_add=True)
     updated_at = models.DateTimeField("Дата изменения", auto_now=True)
-    author = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Автор", null=True, blank=True)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name="Автор", null=True, blank=True)
     class Meta:
         verbose_name = "Новость"
         verbose_name_plural = "Новости"

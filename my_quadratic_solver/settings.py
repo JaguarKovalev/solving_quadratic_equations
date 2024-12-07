@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "solver.apps.SolverConfig",
     "news.apps.NewsConfig",
     "stats.apps.StatsConfig",
+    "accounts.apps.AccountsConfig",
 ]
 
 MIDDLEWARE = [
@@ -83,6 +84,7 @@ DATABASES = {
     }
 }
 
+AUTH_USER_MODEL = "accounts.CustomUser"
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators

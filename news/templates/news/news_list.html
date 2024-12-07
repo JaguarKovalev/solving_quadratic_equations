@@ -31,7 +31,7 @@
         {% for news in page_obj %}
             <div class="news-item">
                 <h2><a href="{% url 'news_detail' news.pk %}">{{ news.title }}</a></h2>
-                <img src="{{ news.image.url }}" alt="{{ news.title }}">
+                <img src="{{ news.image.url }}" alt="{{ news.title }}" style="max-width: 100%; margin-bottom: 10px;">
                 <p>{{ news.content|truncatewords:30 }}</p>
                 <p>
                     <strong>Категория:</strong>
@@ -42,10 +42,16 @@
                     {% endif %}
                 </p>
                 <p>
+                    <strong>Автор:</strong> {{ news.author.username }}
+                </p>
+                <p>
                     <strong>Теги:</strong>
                     {% for tag in news.tags.all %}
                         <a href="{% url 'news_by_tag' tag.slug %}">{{ tag.name }}</a>{% if not forloop.last %}, {% endif %}
                     {% endfor %}
+                </p>
+                <p>
+                    <small>Опубликовано: {{ news.created_at|date:"d.m.Y H:i" }}</small>
                 </p>
             </div>
         {% endfor %}
