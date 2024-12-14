@@ -68,15 +68,21 @@
             <input type="hidden" name="a" value="{{ a }}">
             <input type="hidden" name="b" value="{{ b }}">
             <input type="hidden" name="c" value="{{ c }}">
-            <label for="solution">Ваше решение (корни через запятую):</label>
-            <input type="text" id="solution" name="solution" placeholder="Введите корни">
+
+            <label for="root1">Первый корень:</label>
+            <input type="text" id="root1" name="root1" placeholder="Пример: 1.23">
+
+            <label for="root2">Второй корень:</label>
+            <input type="text" id="root2" name="root2" placeholder="Пример: -3.45">
+
             <button type="submit">Проверить</button>
             <button type="submit" name="solution" value="нет корней" style="background-color: #dc3545; margin-top: 10px;">Нет корней</button>
         </form>
+
         {% if correct_solution %}
             <div class="result">
-                <p><strong>Ваше решение:</strong> {{ user_solution }}</p>
-                <p><strong>Правильный ответ:</strong> {{ correct_solution }}</p>
+                <p><strong>Ваши корни:</strong> {{ user_solution }}</p>
+                <p><strong>Правильные корни:</strong> {{ correct_solution }}</p>
                 <p><strong>Результат:</strong> {{ is_correct|yesno:'Верно,Неверно' }}</p>
             </div>
         {% endif %}

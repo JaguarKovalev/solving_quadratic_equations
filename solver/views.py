@@ -55,30 +55,40 @@ def trainer(request):
         a = float(request.POST['a'])
         b = float(request.POST['b'])
         c = float(request.POST['c'])
-        user_solution = request.POST.get('solution', '').strip()
+
+        root1 = request.POST.get('root1', '').replace(',', '.').strip()
+        root2 = request.POST.get('root2', '').replace(',', '.').strip()
+
+        # Если нажата кнопка "Нет корней"
+        if request.POST.get('solution') == "нет корней":
+            user_solution = "нет корней"
+        else:
+            user_solution = f"{root1},{root2}".strip(',')
 
         discriminant = b ** 2 - 4 * a * c
         if discriminant > 0:
-            root1 = (-b + math.sqrt(discriminant)) / (2 * a)
-            root2 = (-b - math.sqrt(discriminant)) / (2 * a)
-            correct_solution_set = {round(root1, 2), round(root2, 2)}
+            r1 = round((-b + math.sqrt(discriminant)) / (2 * a), 2)
+            r2 = round((-b - math.sqrt(discriminant)) / (2 * a), 2)
+            correct_solution_set = {r1, r2}
         elif discriminant == 0:
-            root = -b / (2 * a)
-            correct_solution_set = {round(root, 2)}
+            r = round(-b / (2 * a), 2)
+            correct_solution_set = {r}
         else:
             correct_solution_set = None
 
+        # Проверка решения
         if correct_solution_set is None:
-            is_correct = user_solution.lower() == 'нет корней'
+            is_correct = user_solution.lower() == "нет корней"
             correct_solution = "Нет корней"
         else:
             try:
-                user_solution_set = {round(float(x.strip()), 2) for x in user_solution.split(',')}
+                user_solution_set = {round(float(x), 2) for x in user_solution.split(',')}
                 is_correct = user_solution_set == correct_solution_set
             except ValueError:
                 is_correct = False
             correct_solution = ", ".join(map(str, sorted(correct_solution_set)))
 
+        # Сохранение результата в БД
         QuadraticSolution.objects.create(
             a=a, b=b, c=c,
             user_solution=user_solution,
@@ -86,9 +96,10 @@ def trainer(request):
             is_correct=is_correct
         )
 
-        # Перенаправление на страницу с результатом
+        # Редирект с результатами
         return redirect(f"{reverse('trainer')}?result=1&is_correct={is_correct}&correct_solution={correct_solution}&user_solution={user_solution}")
 
+    # Если GET запрос с результатами
     if 'result' in request.GET:
         is_correct = request.GET.get('is_correct') == 'True'
         correct_solution = request.GET.get('correct_solution', '')
@@ -98,6 +109,7 @@ def trainer(request):
         correct_solution = None
         user_solution = None
 
+    # Генерация случайных коэффициентов
     random_a = random.randint(1, 10)
     random_b = random.randint(-10, 10)
     random_c = random.randint(-10, 10)
