@@ -11,19 +11,21 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
             margin: 0;
         }
         .container {
             background-color: #fff;
             padding: 20px;
             border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
             width: 400px;
+            box-sizing: border-box;
         }
         h1 {
             text-align: center;
             color: #007bff;
+            margin-bottom: 20px;
         }
         form {
             display: flex;
@@ -38,6 +40,10 @@
             border: 1px solid #ccc;
             border-radius: 5px;
         }
+        .hint {
+            font-size: 0.9em;
+            color: #666;
+        }
         button {
             margin-top: 20px;
             padding: 10px;
@@ -50,6 +56,13 @@
         button:hover {
             background-color: #0056b3;
         }
+        .btn-no-roots {
+            background-color: #dc3545;
+            margin-top: 10px;
+        }
+        .btn-no-roots:hover {
+            background-color: #c82333;
+        }
         .result {
             margin-top: 20px;
             padding: 10px;
@@ -57,35 +70,54 @@
             border-radius: 5px;
             text-align: center;
         }
+        .correct {
+            color: green;
+            font-weight: bold;
+        }
+        .incorrect {
+            color: red;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Мини-тренажёр</h1>
-        <p>Уравнение: {{ a }}x² + {{ b }}x + {{ c }} = 0</p>
-        <form method="post">
-            {% csrf_token %}
-            <input type="hidden" name="a" value="{{ a }}">
-            <input type="hidden" name="b" value="{{ b }}">
-            <input type="hidden" name="c" value="{{ c }}">
+<div class="container">
+    <h1>Мини-тренажёр</h1>
+    <p>Уравнение: <strong>{{ a }}x² + {{ b }}x + {{ c }} = 0</strong></p>
+    <form method="post">
+        {% csrf_token %}
+        <input type="hidden" name="a" value="{{ a }}">
+        <input type="hidden" name="b" value="{{ b }}">
+        <input type="hidden" name="c" value="{{ c }}">
 
-            <label for="root1">Первый корень:</label>
-            <input type="text" id="root1" name="root1" placeholder="Пример: 1.23">
+        <label for="root1">Первый корень:</label>
+        <input type="text" id="root1" name="root1" placeholder="Например: 0.14 или 0.149">
 
-            <label for="root2">Второй корень:</label>
-            <input type="text" id="root2" name="root2" placeholder="Пример: -3.45">
+        <label for="root2">Второй корень:</label>
+        <input type="text" id="root2" name="root2" placeholder="Например: -3.45 или -3,45">
+        
+        <p class="hint">
+            Вводите корни в любом порядке, можно использовать запятую или точку.<br>
+            Программа учитывает и округление, и отброс лишних знаков — <br>
+            если уравнение даёт корень 0.149, то подойдут и 0.15, и 0.14.
+            Если уравнение не имеет корней, нажмите «Нет корней».
+        </p>
 
-            <button type="submit">Проверить</button>
-            <button type="submit" name="solution" value="нет корней" style="background-color: #dc3545; margin-top: 10px;">Нет корней</button>
-        </form>
+        <button type="submit">Проверить</button>
+        <button type="submit" name="solution" value="нет корней" class="btn-no-roots">Нет корней</button>
+    </form>
 
-        {% if correct_solution %}
-            <div class="result">
-                <p><strong>Ваши корни:</strong> {{ user_solution }}</p>
-                <p><strong>Правильные корни:</strong> {{ correct_solution }}</p>
-                <p><strong>Результат:</strong> {{ is_correct|yesno:'Верно,Неверно' }}</p>
-            </div>
-        {% endif %}
-    </div>
+    {% if correct_solution %}
+        <div class="result">
+            <p><strong>Ваши корни:</strong> {{ user_solution }}</p>
+            <p><strong>Правильные корни:</strong> {{ correct_solution }}</p>
+            {% if is_correct %}
+                <p class="correct">Верно!</p>
+            {% else %}
+                <p class="incorrect">Неверно.</p>
+            {% endif %}
+        </div>
+    {% endif %}
+</div>
 </body>
 </html>
